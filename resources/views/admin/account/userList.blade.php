@@ -45,39 +45,40 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white">
-                        @foreach ($accounts as $account)
-                        <tr id="user-{{ $account->id }}">
-                            <td>
-                                <div class="mx-auto" style="width: 60px; height: 60px; overflow: hidden;">
-                                    @if ($account->image)
-                                        <img src="{{ asset('storage/'.$account->image) }}"
-                                             class="w-100 h-100 img-thumbnail rounded-circle" alt="" />
-                                    @else
-                                        <img class="w-100 h-100 img-thumbnail rounded-circle"
-                                             src="https://ui-avatars.com/api/?name={{ $account->name }}" />
-                                    @endif
-                                </div>
-                            </td>
-                            <td class="align-middle">{{ $account->name }}</td>
-                            <td class="align-middle">{{ $account->email }}</td>
-                            <td class="align-middle">{{ $account->gender }}</td>
-                            <td class="align-middle">
-                                <div class="d-flex justify-content-center gap-2">
-                                    <!-- Promote to Admin -->
-                                    <button class="btn btn-sm btn-warning shadow-sm promote-to-admin"
-                                            data-id="{{ $account->id }}">
-                                        <i class="fa-solid fa-shield-halved"></i>
-                                    </button>
+                            @forelse ($accounts as $account)
+                            <tr id="user-{{ $account->id }}">
+                                <td>
+                                    <div class="mx-auto" style="width: 60px; height: 60px; overflow: hidden;">
+                                        @if ($account->image)
+                                            <img src="{{ asset('storage/'.$account->image) }}"
+                                                 class="w-100 h-100 img-thumbnail rounded-circle" alt="" />
+                                        @else
+                                            <img class="w-100 h-100 img-thumbnail rounded-circle"
+                                                 src="https://ui-avatars.com/api/?name={{ $account->name }}" />
+                                        @endif
+                                    </div>
+                                </td>
+                                <td class="align-middle">{{ $account->name }}</td>
+                                <td class="align-middle">{{ $account->email }}</td>
+                                <td class="align-middle">{{ $account->gender }}</td>
+                                <td class="align-middle">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <!-- Promote to Admin -->
+                                        <button class="btn btn-sm btn-warning shadow-sm promote-to-admin"
+                                                data-id="{{ $account->id }}">
+                                            <i class="fa-solid fa-shield-halved"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">
+                                    <i class="fa-solid fa-user-slash"></i> No user accounts found.
+                                </td>
+                            </tr>
+                            @endforelse
 
-                                    <!-- Delete User -->
-                                    <button class="btn btn-sm btn-danger shadow-sm delete-account"
-                                            data-id="{{ $account->id }}">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -171,5 +172,7 @@
             }
         });
     });
+
+    
 </script>
 @endsection

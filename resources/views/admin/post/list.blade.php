@@ -46,6 +46,7 @@
     <button type="button" class="btn btn-lg bg-white shadow-sm">
         <i class="fa-solid fa-newspaper me-2 text-primary fw-bold"></i>
         <span class="badge p-2 text-bg-primary">{{ $post->total() }}</span>
+
     </button>
 
     <!-- Create Button -->
@@ -82,11 +83,13 @@
                                     <i class="fa-solid fa-bookmark me-2"></i>{{ $p->save_count }}
                                 </td>
                                 <td class="fw-semibold text-center">
-                                    @if ($p->approved)
+                                    @switch($p->approved)
+                                    @case(true)
                                         <span class="badge bg-success">Approved</span>
-                                    @else
+                                        @break
+                                    @default
                                         <span class="badge bg-warning text-dark">Pending</span>
-                                    @endif
+                                @endswitch
                                 </td>
                                 <td class="fw-semibold text-center">
                                     <div class="d-flex justify-content-center justify-content-md-end gap-2">
@@ -142,6 +145,8 @@
     $('.btn-delete').click(function() {
         let button = $(this);
         let post_id = button.data('id');
+        let topicRow = $(this).closest('tr');
+        let topicID = topicRow.find('.topic-id').val();
 
         Swal.fire({
             title: 'Are you sure?',
@@ -159,7 +164,7 @@
                     data: { post_id: post_id },
                     success: function() {
                         Swal.fire('Deleted!', 'Post has been removed.', 'success')
-                        .then(() => $('#post-' + post_id).fadeOut(500, function() { $(this).remove(); }));
+                        .then(() => location.reload());
                     },
                     error: function() {
                         Swal.fire('Error!', 'Something went wrong.', 'error');
@@ -183,6 +188,7 @@
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, approve it!'
     }).then((result) => {
+
         if (result.isConfirmed) {
             $.ajax({
                 type: 'POST',
@@ -200,6 +206,14 @@
                 }
             });
         }
+
+
+
+
+
+
+
+
     });
 });
 </script>

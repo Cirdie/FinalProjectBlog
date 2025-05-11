@@ -20,7 +20,7 @@ class FeedbackController extends Controller
             'subject'=>$request->subject,
             'message'=>$request->message
         ]);
-        return redirect()->route('user#home')->with(['feedbackSent'=>'Feedback poh lte p nww']);
+        return redirect()->route('user#home')->with(['feedbackSent'=>'Feedback Sent']);
     }
 
     //Direct to Admin feedback page

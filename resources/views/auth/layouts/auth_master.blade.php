@@ -9,7 +9,7 @@
     <title>@yield('title')</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{ asset('user/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{asset('user/bootstrap/css/bootstrap.mins.css')}}">
 
     <!-- Custom Styles -->
     <link rel="stylesheet" href="{{ asset('user/css/form.css') }}">

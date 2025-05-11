@@ -15,20 +15,40 @@ class PostController extends Controller
 {
     //Direct post list page
     public function listPage() {
-        $post = Post::select('posts.*','users.name as admin_name','topics.name as topic_name')
-            ->when(request('searchKey'), function($query) {
-                $query->orWhere('topics.name', 'like', '%' . request('searchKey') . '%')
-                      ->orWhere('posts.desc', 'like', '%' . request('searchKey') . '%');
+        $post = Post::select('posts.*', 'users.name as admin_name', 'topics.name as topic_name')
+            ->when(request('searchKey'), function ($query) {
+                $query->where(function ($subQuery) {
+                    $subQuery->orWhere('topics.name', 'like', '%' . request('searchKey') . '%')
+                             ->orWhere('posts.desc', 'like', '%' . request('searchKey') . '%');
+                });
             })
             ->leftJoin('topics', 'posts.topic_id', 'topics.id')
             ->leftJoin('users', 'posts.admin_id', 'users.id')
-            ->where('posts.approved', 1) // ✅ Only approved posts
-            ->orderBy('posts.created_at', 'desc')
-            ->paginate(10); // ✅ Correct pagination
+            ->orderBy('posts.created_at', 'desc') // ✅ Show the most recent posts first
+            ->paginate(10);
 
         return view('admin.post.list', compact('post'));
     }
 
+    public function filterSavedPosts($topicId) {
+        $topics = Topic::all();
+        $posts = Post::select('posts.*', 'users.name as admin_name', 'topics.name as topic_name', 'users.image as profile_image')
+            ->leftJoin('users', 'posts.admin_id', '=', 'users.id')
+            ->leftJoin('topics', 'posts.topic_id', '=', 'topics.id')
+            ->join('saved', 'posts.id', '=', 'saved.post_id') // ✅ Only get saved posts
+            ->where('saved.user_id', Auth::id()) // ✅ Ensure posts are saved by the logged-in user
+            ->where('posts.topic_id', $topicId) // ✅ Filter by topic
+            ->paginate(10);
+
+        return view('user.post.saved', compact('topics', 'posts', 'topicId'));
+    }
+
+    
+    public function getPendingCount()
+    {
+        $pendingCount = Post::where('approved', 0)->count();
+        return response()->json(['count' => $pendingCount]);
+    }
 
     public function store(Request $request)
     {

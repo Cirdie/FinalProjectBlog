@@ -1,88 +1,122 @@
 @extends('user.layout.master')
 
+@section('title', 'Personal Information')
+
 @section('content')
-<div class="container-fluid">
-    <div class="col-lg-6 offset-lg-3 mt-5">
-        <div class="card shadow-lg rounded">
-            <div class="card-body">
-                <div class="card-title text-center">
-                    <h3 class="fw-bold text-primary">Personal Information</h3>
+
+<style>
+    /* Profile Card Styling */
+    .profile-card {
+        max-width: 750px;
+        margin: auto;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        transition: 0.3s ease-in-out;
+    }
+
+    .profile-card:hover {
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Profile Image Styling */
+    .profile-img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 50%;
+        display: block;
+        margin: auto;
+        border: 5px solid #007bff;
+        transition: 0.3s;
+    }
+
+    .profile-img:hover {
+        transform: scale(1.05);
+    }
+
+    /* Input Fields Styling */
+    .form-control {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.3);
+    }
+
+    /* Action Buttons */
+    .btn-custom {
+        font-size: 16px;
+        font-weight: 500;
+        transition: 0.3s ease;
+    }
+
+    .btn-custom:hover {
+        transform: translateY(-2px);
+        box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.2);
+    }
+</style>
+
+<div class="container py-5">
+    <div class="profile-card">
+        <div class="text-center">
+            <h3 class="fw-bold text-primary mb-3">
+                <i class="fa-solid fa-user-circle me-2"></i> Personal Information
+            </h3>
+        </div>
+        <hr>
+
+        <div class="row mt-4">
+            <!-- Profile Image Section -->
+            <div class="col-lg-4 text-center">
+                <div class="mb-3">
+                    @if (Auth::user()->image)
+                        <img src="{{ asset('storage/' . Auth::user()->image) }}" class="profile-img" alt="Profile Image">
+                    @else
+                        <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}" class="profile-img" alt="Default Avatar">
+                    @endif
                 </div>
-                <hr>
+            </div>
 
-                <!-- Form to Show Personal Information -->
-                <form action="" method="post" novalidate="novalidate">
+            <!-- User Information -->
+            <div class="col-lg-8">
+                <form>
                     @csrf
-                    <div class="form-group mt-3">
-                        <div class="row">
-                            <!-- Profile Image -->
-                            <div class="col-lg-6">
-                                <div style="width: 250px; height: 250px; overflow: hidden; border-radius: 50%; margin: 0 auto;">
-                                    @if (Auth::user()->image)
-                                        <img src="{{ asset('storage/' . Auth::user()->image) }}" class="w-100 h-100 img-thumbnail" alt="Profile Image" />
-                                    @else
-                                        <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}" class="w-100 h-100 img-thumbnail" alt="Default Avatar" />
-                                    @endif
-                                </div>
-                            </div>
+                    <!-- Name -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold"><i class="fa-solid fa-user me-2"></i>Name</label>
+                        <input type="text" class="form-control" value="{{ Auth::user()->name }}" readonly>
+                    </div>
 
-                            <!-- User Info Fields -->
-                            <div class="col-lg-6">
-                                <!-- Name -->
-                                <div class="row mb-3">
-                                    <div class="col-3 d-flex align-items-center">
-                                        <label for="name" class="fs-4"><i class="fa-solid fa-user me-2"></i></label>
-                                    </div>
-                                    <div class="col-9">
-                                        <input type="text" name="name" class="form-control" value="{{ Auth::user()->name }}" readonly disabled />
-                                    </div>
-                                </div>
+                    <!-- Role -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold"><i class="fa-solid fa-shield-halved me-2"></i>Role</label>
+                        <input type="text" class="form-control" value="{{ Auth::user()->role }}" readonly>
+                    </div>
 
-                                <!-- Role -->
-                                <div class="row mb-3">
-                                    <div class="col-3 d-flex align-items-center">
-                                        <label for="role" class="fs-4"><i class="fa-solid fa-shield-halved me-2"></i></label>
-                                    </div>
-                                    <div class="col-9">
-                                        <input type="text" name="role" class="form-control" value="{{ Auth::user()->role }}" readonly disabled />
-                                    </div>
-                                </div>
+                    <!-- Gender -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold"><i class="fa-solid fa-venus-mars me-2"></i>Gender</label>
+                        <input type="text" class="form-control" value="{{ Auth::user()->gender }}" readonly>
+                    </div>
 
-                                <!-- Gender -->
-                                <div class="row mb-3">
-                                    <div class="col-3 d-flex align-items-center">
-                                        <label for="gender" class="fs-4"><i class="fa-solid fa-venus-mars me-2"></i></label>
-                                    </div>
-                                    <div class="col-9">
-                                        <input type="text" name="gender" class="form-control" value="{{ Auth::user()->gender }}" readonly disabled />
-                                    </div>
-                                </div>
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold"><i class="fa-solid fa-envelope me-2"></i>Email</label>
+                        <input type="text" class="form-control" value="{{ Auth::user()->email }}" readonly>
+                    </div>
 
-                                <!-- Email -->
-                                <div class="row mb-3">
-                                    <div class="col-3 d-flex align-items-center">
-                                        <label for="email" class="fs-4"><i class="fa-solid fa-envelope me-2"></i></label>
-                                    </div>
-                                    <div class="col-9">
-                                        <input type="text" name="email" class="form-control" value="{{ Auth::user()->email }}" readonly disabled />
-                                    </div>
-                                </div>
-
-                                <!-- Action Buttons -->
-                                <div class="row py-3">
-                                    <div class="col-6">
-                                        <a href="{{ route('user#home') }}" class="btn btn-outline-secondary w-100">
-                                            <i class="fa-solid fa-arrow-left me-2"></i> Back
-                                        </a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a href="{{ route('user#updateAccountPage') }}" class="btn btn-primary w-100">
-                                            <i class="fa-solid fa-pen-to-square me-2"></i> Edit
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Action Buttons -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{{ route('user#home') }}" class="btn btn-outline-secondary btn-custom">
+                            <i class="fa-solid fa-arrow-left me-2"></i> Back
+                        </a>
+                        <a href="{{ route('user#updateAccountPage') }}" class="btn btn-primary btn-custom">
+                            <i class="fa-solid fa-pen-to-square me-2"></i> Edit Information
+                        </a>
                     </div>
                 </form>
             </div>
@@ -90,6 +124,7 @@
     </div>
 </div>
 
+<!-- SweetAlert for Success Message -->
 @if (session('updateAlert'))
     @section('scriptSource')
         <script>

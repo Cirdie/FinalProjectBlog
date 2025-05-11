@@ -22,19 +22,30 @@ class UserAccountController extends Controller
         $topics = Topic::get();
         return view('user.account.changePasswordPage',compact('topics'));
     }
-
-    //Change new password
     public function changePassword(Request $request) {
+        // Validate input fields
         $this->passwordValidationCheck($request);
-        $dbHashPassword = Auth::user()->password;
-        if(Hash::check($request->oldPassword, $dbHashPassword)) {
-            $newPassword = hash::make($request->newPassword);
-            $user = User::where('id',Auth::user()->id)->update([
-                'password' => $newPassword
-            ]);
+
+        $user = Auth::user();
+        $dbHashPassword = $user->password;
+
+        // Check if the old password matches the stored password
+        if (!Hash::check($request->oldPassword, $dbHashPassword)) {
+            return redirect()->back()->withErrors(['oldPassword' => 'Old password is incorrect.']);
         }
-        return redirect()->route('user#home')->with(['info'=>'Password changed successfully']);
+
+        // If old password is correct, update to new password
+        $newPassword = Hash::make($request->newPassword);
+        $user->password = $newPassword;
+        $user->save();
+
+        // Redirect to information page with success message
+        return redirect()->route('user#informationPage')->with('changePasswordSuccess', 'Password changed successfully.');
     }
+
+
+
+
 
     //check password validation
     private function passwordValidationCheck($request) {

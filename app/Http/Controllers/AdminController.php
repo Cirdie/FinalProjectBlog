@@ -24,15 +24,24 @@ class AdminController extends Controller
 
     //Change new password
     public function changePassword(Request $request) {
+        // Validate input fields
         $this->passwordValidationCheck($request);
-        $dbHashPassword = Auth::user()->password;
-        if(Hash::check($request->oldPassword, $dbHashPassword)) {
-            $newPassword = hash::make($request->newPassword);
-            $user = User::where('id',Auth::user()->id)->update([
-                'password' => $newPassword
-            ]);
+
+        $admin = Auth::user(); // Get the logged-in admin
+        $dbHashPassword = $admin->password;
+
+        // Check if the old password matches the stored password
+        if (!Hash::check($request->oldPassword, $dbHashPassword)) {
+            return redirect()->back()->withErrors(['oldPassword' => 'Old password is incorrect.']);
         }
-        return redirect()->route('admin#home')->with(['changePw'=>'Password changed successfully']);
+
+        // If old password is correct, update to new password
+        $newPassword = Hash::make($request->newPassword);
+        User::where('id', $admin->id)->update([
+            'password' => $newPassword
+        ]);
+
+        return redirect()->route('admin#home')->with(['changePw' => 'Password changed successfully']);
     }
 
     //check password validation

@@ -50,29 +50,35 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white">
-                        @foreach ($message as $m)
-                        <tr id="message-{{ $m->id }}">
-                            <td class="align-middle">{{ $m->id }}</td>
-                            <td class="align-middle">{{ $m->name }}</td>
-                            <td class="align-middle">{{ $m->email }}</td>
-                            <td class="align-middle">{{ $m->subject }}</td>
-                            <td class="align-middle">{{ Str::words($m->message, 5, '...') }}</td>
-                            <td class="align-middle">
-                                <div class="d-flex justify-content-center gap-2">
-                                    <!-- View Message -->
-                                    <a href="{{ route('admin#feedbackView', $m->id) }}" class="btn btn-sm btn-light shadow-sm">
-                                        <i class="fa-solid fa-eye text-primary"></i>
-                                    </a>
+                            @forelse ($message as $m)
+                            <tr id="message-{{ $m->id }}">
+                                <td class="align-middle">{{ $m->id }}</td>
+                                <td class="align-middle">{{ $m->name }}</td>
+                                <td class="align-middle">{{ $m->email }}</td>
+                                <td class="align-middle">{{ $m->subject }}</td>
+                                <td class="align-middle">{{ Str::words($m->message, 5, '...') }}</td>
+                                <td class="align-middle">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <!-- View Message -->
+                                        <a href="{{ route('admin#feedbackView', $m->id) }}" class="btn btn-sm btn-light shadow-sm">
+                                            <i class="fa-solid fa-eye text-primary"></i>
+                                        </a>
 
-                                    <!-- Delete Message -->
-                                    <button class="btn btn-sm btn-danger shadow-sm delete-message"
-                                            data-id="{{ $m->id }}">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
+                                        <!-- Delete Message -->
+                                        <button class="btn btn-sm btn-danger shadow-sm delete-message"
+                                                data-id="{{ $m->id }}">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">
+                                    <i class="fa-solid fa-envelope-open-text"></i> No messages found.
+                                </td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

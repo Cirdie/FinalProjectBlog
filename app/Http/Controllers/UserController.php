@@ -52,24 +52,37 @@ class UserController extends Controller
     }
 
     // Display a single post
-    public function view($id)
-    {
-        $post = Post::select(
+    public function view($id = null)
+{
+    // If no ID is provided, redirect to home with a message
+    if ($id === null) {
+        return redirect()->route('user#home')->with('message', 'No post selected.');
+    }
+
+    // Attempt to retrieve the post
+    $post = Post::select(
             'posts.*',
             'users.role as role',
             'users.gender as admin_gender',
             'users.name as admin_name',
             'users.image as profile_image'
         )
-            ->leftJoin('users', 'posts.admin_id', 'users.id')
-            ->where('posts.id', $id)
-            ->firstOrFail();
+        ->leftJoin('users', 'posts.admin_id', 'users.id')
+        ->where('posts.id', $id)
+        ->first();
 
-        $topic_name = Topic::where('id', $post->topic_id)->value('name');
-        $topics = Topic::all();
-
-        return view('user.view', compact('post', 'topic_name', 'topics'));
+    // If post does not exist, redirect to home with an error
+    if (!$post) {
+        return redirect()->route('user#home')->with('error', 'Post not found.');
     }
+
+    // Fetch topic details
+    $topic_name = Topic::where('id', $post->topic_id)->value('name');
+    $topics = Topic::all();
+
+    return view('user.view', compact('post', 'topic_name', 'topics'));
+}
+
 
     // Filter posts by topic
     public function topicFilter($topicId)

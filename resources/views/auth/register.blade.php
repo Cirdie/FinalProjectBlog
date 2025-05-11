@@ -7,9 +7,10 @@
     <div class="login-container bg-white">
         <div class="row">
             <div class="col-lg-5">
-                <div class="bg-primary bg-image border-end">
-                    <!-- Content here -->
-                </div>
+                <div class="bg-primary bg-image border-end"
+                style="background: url('{{ asset('images/Login2.jpeg') }}') center/cover no-repeat; height: 100%;">
+               <!-- Image or content here -->
+           </div>
             </div>
             <div class="col-12 col-lg-7 py-4 px-5 py-lg-3">
                 <div class="text-end d-flex align-items-center fw-semibold">

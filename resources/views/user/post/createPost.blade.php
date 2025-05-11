@@ -37,8 +37,10 @@
         <div id="create-post" class="bg-primary d-md-none">
             <i class="bi bi-pencil-square text-white"></i>
           </div>
-
           <div id="post-form" class="col-md-4 d-none d-md-block border-0 pt-3">
+            <div class="card-header bg-primary text-white text-center">
+                <h4 class="fw-bold"><i class="fa-solid fa-plus me-2"></i> Create New Post</h4>
+            </div>
             <form class="card mb-3 shadow rounded p-4" action="{{ route('user#postCreate') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="token" value="{{ $token }}">

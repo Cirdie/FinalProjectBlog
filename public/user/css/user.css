@@ -42,16 +42,58 @@
     margin: 5px;
   }
 
+/* Remove background from Topics List */
+.list-group {
+    background-color: transparent !important; /* No background */
+    border: none !important;
+}
+
+.list-group-item {
+    background-color: transparent !important; /* No background */
+    border: none !important; /* Remove borders */
+    color: #333; /* Default text color */
+}
+
+/* ✅ Light Mode - Active Topic Link */
+.list-group-item.active a {
+    color: #ffffff !important; /* White text when active */
+}
+
+/* Dark Mode */
+.dark-mode .list-group-item {
+    background-color: transparent !important; /* No background in dark mode */
+    color: #6f42c1 !important; /* White text in dark mode */
+}
 
 
+/* ✅ Light Mode - Active Topic Link */
+.dark-mode .list-group-item.active a {
+    color: #ffffff !important; /* White text when active */
+}
 
-/* Full width when click view */
+/* Active Topic Styling */
+.list-group-item.active {
+    background-color: #6f42c1 !important; /* Keep purple for active */
+    color: #ffffff !important;
+}
 
-.img-container.full-width {
-    max-height: none;
-  }
+/* Default Light Mode */
+.list-group a {
+    color: #333 !important; /* Default dark text */
+    text-decoration: none;
+}
 
+/* Dark Mode - Make Links White */
+.dark-mode .list-group a {
+    color: #6f42c1 !important; /* White text in dark mode */
+}
 
-.image.filter-none {
-    filter: none;
+/* Ensure Active Topic Stays Visible */
+.dark-mode .list-group-item.active a {
+    color: #ffffff !important; /* White text for active topic */
+}
+
+/* Hover Effect for Better UX */
+.dark-mode .list-group a:hover {
+    color: #ddd !important; /* Light gray for hover */
 }

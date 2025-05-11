@@ -1,58 +1,8 @@
 @extends('user.layout.master')
 
 @section('content')
-<div class="container mt-5">
-    <div class="row">
-        <!-- 📌 Sidebar Section (Fixed Left, Dark Mode Compatible) -->
-        <div class="sidebar col-lg-2 d-none d-lg-block pt-5"
-            style="position: fixed; left: 10px; width: 250px; height: 88vh; background-color: white;
-                   box-shadow: 2px 0 0px rgba(0, 0, 0, 0.1); padding: 20px;">
 
-            <!-- 📢 Announcements -->
-            <div class="mb-4">
-                <h6 class="fw-bold text-primary"><i class="bi bi-megaphone-fill me-1"></i> Announcements</h6>
-                <marquee direction="up" scrollamount="2" style="height: 60px; font-size: 12px;">
-                    <p>📣 New coding workshop this Friday!</p>
-                </marquee>
-            </div>
-            <hr style="border-top: 2px solid #6f42c1; margin-bottom: 20px;">
-
-<!-- 📌 Topics List (Filtered for Saved Topics) -->
-<div class="mb-4">
-    <h6 class="fw-bold text-primary"><i class="bi bi-tags-fill me-1"></i> Topics</h6>
-    <ul class="list-group">
-        <li class="list-group-item border-0 {{ request('topic_id') ? '' : 'active bg-primary text-white' }}">
-            <a class="text-decoration-none {{ request('topic_id') ? 'text-dark' : 'text-white fw-bold' }}"
-                href="{{ route('saved#list') }}">
-                📌 All Saved Posts
-            </a>
-        </li>
-        @foreach ($topics as $topic)
-            <li class="list-group-item border-0 {{ request('topic_id') == $topic->id ? 'active bg-primary text-white' : '' }}">
-                <a class="text-decoration-none {{ request('topic_id') == $topic->id ? 'text-white fw-bold' : 'text-dark' }}"
-                    href="{{ route('saved#list', ['topic_id' => $topic->id]) }}">
-                    📝 {{ $topic->name }}
-                </a>
-            </li>
-        @endforeach
-    </ul>
-</div>
-
-
-
-            <hr style="border-top: 2px solid #6f42c1; margin-bottom: 20px;">
-
-            <!-- 📂 Quick Links -->
-            <div class="mb-4">
-                <h6 class="fw-bold text-primary"><i class="bi bi-link-45deg me-1"></i> Resources</h6>
-                <ul class="list-unstyled">
-                    <li><a href="https://www.w3schools.com" target="_blank" class="text-dark">📘 W3Schools</a></li>
-                    <li><a href="https://www.geeksforgeeks.org" target="_blank" class="text-dark">💡 GeeksforGeeks</a></li>
-                    <li><a href="https://stackoverflow.com" target="_blank" class="text-dark">👨‍💻 StackOverflow</a></li>
-                </ul>
-            </div>
-            <hr style="border-top: 2px solid #6f42c1; margin-bottom: 20px;">
-        </div>
+@include('user.layout.sidebar')
 
         <!-- 📌 Saved Posts Section -->
         <div class="col-lg-6 offset-lg-4 bg-card pt-4"

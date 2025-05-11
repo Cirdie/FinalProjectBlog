@@ -15,23 +15,13 @@ use App\Http\Controllers\AdminHomeController;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\NotificationController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::redirect('/', 'user/home');
 
 Route::group(['prefix'=>'user',],function(){
     Route::group(['prefix'=>'home'],function(){
         Route::get('/',[UserController::class,'home'])->name('user#home');
-        Route::get('view/{id}',[UserController::class,'view'])->name('user#view');
+        Route::get('view/{id?}', [UserController::class, 'view'])->name('user#view');
         Route::get('topicFilter/{id}',[UserController::class,'topicFilter'])->name('user#topicFilter');
     });
 });
@@ -120,7 +110,8 @@ Route::get('/user/load-more-posts', [PostController::class, 'loadMorePosts'])->n
 
         Route::group(['prefix'=>'saved'],function(){
             Route::get('list',[SavedController::class,'savedList'])->name('saved#list');
-            Route::get('unsave',[SavedController::class,'unsave'])->name('saved#unsave');
+            Route::get('uns ave',[SavedController::class,'unsave'])->name('saved#unsave');
+            Route::get('/user/saved/list', [SavedController::class, 'savedList'])->name('user#savedList');
 
         });
 
